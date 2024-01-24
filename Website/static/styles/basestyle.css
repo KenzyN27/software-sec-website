@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    margin: 0 auto;
+    height: 100vh;
+    background-color: #d3f2eb;
+}
+
+nav {
+    width: 100%;
+    float: left;
+}
+
+.navbar {
+    margin: 0;
+    padding: 8px;
+    background-color: #1b305c;
+    text-decoration: none;
+    color: white;
+}
+
+.navbar li {
+    display: inline-block;
+}
+
+.navbar a {
+    display: block;
+    padding: 8px 25px;
+    text-decoration: none;
+    color: white;
+}
+
+.navbar a:hover {
+    background-color: #3a5ba2;
+}
