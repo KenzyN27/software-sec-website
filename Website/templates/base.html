@@ -13,17 +13,11 @@
 
     <body>
 
-        <nav>
+        <div class="navbar">
+            <a href="#home">Home</a><a href="#contact">Contact</a><a href="#account">Account</a>
+        </div>
 
-            <ul class="navbar">
-
-                <!-- Ordered this way because html processes line breaks weird for padding if I line break each a item -->
-                <li><a href="#home">Home</a></li> <li><a href="#contact">Contact</a></li> <li><a href="#account">Account</a></li>
-            
-            </ul>
-
-        </nav>
-
+        <div class="content-container">{% block content %}{% endblock %}</div>
 
     </body>
 </html>
