@@ -10,6 +10,7 @@ input[type=text], input[type=password] {
     margin: 10px 0;
     display: inline-block;
     border: 1px solid #60435f;
+    border-radius: 8px;
     box-sizing: border-box;
     width: 100%
 }
@@ -21,11 +22,15 @@ input[type=text], input[type=password] {
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 50%;
+    width: 200px;
+    border-radius: 8px;
 }
 
 .button-form {
     margin: 0 auto;
     text-align: center;
-    
+}
+
+.button-form button:hover {
+    background-color: #c8f5f3;
 }

@@ -11,6 +11,6 @@ def login():
 def logout():
     return render_template("logout.html")
 
-@auth.route('/create-account')
+@auth.route('/create_account')
 def create_account():
     return render_template("create_account.html")
