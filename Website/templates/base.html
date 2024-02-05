@@ -14,7 +14,16 @@
     <body>
 
         <div class="navbar">
-            <a href="#home">Home</a><a href="#contact">Contact</a><a href="#account">Account</a>
+            <a href="/">Home</a>
+            <a href="contact">Contact</a>
+            <div class="account-dropdown">
+                <button class="dropbtn">Account</button>
+                <div class="dropdown-stuff">
+                    <a href="login">Login</a>
+                    <a href="change_password">Change Password</a>
+                    <a href="logout">Logout</a>
+                </div>
+            </div>
         </div>
 
         <div class="content-container">{% block content %}{% endblock %}</div>

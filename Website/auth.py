@@ -1,16 +1,16 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 # setup Blueprint for authentication webpages
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login')
 def login():
-    return "<p>Login</p>"
+    return render_template("login.html")
 
 @auth.route('/logout')
 def logout():
-    return "<p>logout</p>"
+    return render_template("logout.html")
 
 @auth.route('/create-account')
 def create_account():
-    return "<p>create account</p>"
+    return render_template("create_account.html")

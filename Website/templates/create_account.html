@@ -1,0 +1,61 @@
+{% extends "base.html" %} {% block title %}Create an Account{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="../static/styles/formstyle.css">
+
+<form method="POST">
+    <h2 align="center">Create an Account</h2>
+    <div class="account-form">
+        <label for="uname">Username:</label>
+        <br />
+        <input
+            type="text"
+            placeholder="Enter Username"
+            id="uname"
+            name="uname"
+            required
+        >
+    </div>
+
+    <div class="account-form">
+        <label for="email">Email Address:</label>
+        <br />
+        <input
+            type="text"
+            placeholder="Enter email"
+            id="email"
+            name="email"
+            required
+        >
+    </div>
+
+    <div class="account-form">
+        <label for="pswd1">Password:</label>
+        <br />
+        <input
+            type="password"
+            placeholder="Enter password"
+            id="pswd1"
+            name="pswd1"
+            required
+        >
+    </div>
+
+    <div class="account-form">
+        <label for="pswd2">Confirm Password:</label>
+        <br />
+        <input
+            type="password"
+            placeholder="Confirm password"
+            id="pswd2"
+            name="pswd2"
+            required
+        >
+    </div>
+
+    <div class="button-form">
+        <button type="submit">Create Account</button>
+    </div>
+</form>
+{% endblock %}

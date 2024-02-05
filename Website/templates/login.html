@@ -1,50 +1,5 @@
-<!DOCTYPE html>
+{% extends "base.html" %} {% block title %}Login{% endblock %}
 
-<html>
-
-    <link rel="stylesheet" href="../static/styles/basestyle.css">
-    <link rel="stylesheet" href="../static/styles/loginstyle.css">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Login</title> 
-    </head>
-
-  <body>
-
-    <div class="container">
-
-      <h1>Welcome!</h1>
-
-      <form action="login_action.php" method="post">
-
-        <div class="logincontainer">
-          <label for "uname">Username:</label>
-          <input type="text" placeholder="Enter Username" name="uname" required>
-
-          <label for "pass">Password:</label>
-          <input type="password" placeholder="Enter Password" name="pass" required>
-
-          <button type="submit">Login</button>
-          <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-          </label>
-
-          <span class="pass">Forgot <a href="ResetPassword.html">password?</a></span>
-          
-          <div>
-              <span class="create">Don't have an account? <a href="CreateAccount.html"> Create Account</button>
-          </div>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </body>
-
-</html>
-    </body>
-
-</html>
+{% block content %}
+<h1>This is the login.</h1>
+{% endblock %}
