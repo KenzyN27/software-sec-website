@@ -64,3 +64,36 @@ body {
     background-color: #d67ab1;
     color: black;
 }
+
+.bad-alert {
+    padding: 16px;
+    background-color: #ffb9b9;
+    color: #6f3333;
+    margin-bottom: 20px;
+}
+
+.good-alert {
+    padding: 16px;
+    background-color: #abffbd;
+    color: #3a7446;
+    margin-bottom: 20px;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 26px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.bad-alert .closebtn:hover {
+    color: #6f3333;
+}
+
+.good-alert .closebtn:hover {
+    color: #3a7446;
+}
