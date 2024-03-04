@@ -1,50 +1,47 @@
-<!DOCTYPE html>
+{% extends "base.html" %} {% block title %}Login{% endblock %}
 
-<html>
+{% block content %}
 
-    <link rel="stylesheet" href="../static/styles/basestyle.css">
-    <link rel="stylesheet" href="../static/styles/loginstyle.css">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Login</title> 
-    </head>
+<link rel="stylesheet" href="../static/styles/formstyle.css">
 
-  <body>
-
-    <div class="container">
-
-      <h1>Welcome!</h1>
-
-      <form action="login_action.php" method="post">
-
-        <div class="logincontainer">
-          <label for "uname">Username:</label>
-          <input type="text" placeholder="Enter Username" name="uname" required>
-
-          <label for "pass">Password:</label>
-          <input type="password" placeholder="Enter Password" name="pass" required>
-
-          <button type="submit">Login</button>
-          <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-          </label>
-
-          <span class="pass">Forgot <a href="ResetPassword.html">password?</a></span>
-          
-          <div>
-              <span class="create">Don't have an account? <a href="CreateAccount.html"> Create Account</button>
-          </div>
-
-        </div>
-
-      </form>
-
+<form method="POST">
+    <h2 align="center">Login</h2>
+    <div class="account-form">
+        <label for="email">Email:</label>
+        <br />
+        <input
+            type="text"
+            placeholder="Enter Email"
+            id="email"
+            name="email"
+            required
+        >
     </div>
 
-  </body>
+    <div class="account-form">
+        <label for="pswd">Password:</label>
+        <br />
+        <input
+            type="password"
+            placeholder="Enter password"
+            id="pswd"
+            name="pswd"
+            required
+        >
+    </div>
 
-</html>
-    </body>
+    <div class="account-form">
+        <label for="remember">
+            <input
+                type="checkbox"
+                name="remember"
+            > Remember Me
+        </label>
+    </div>
 
-</html>
+    <div class="button-form">
+        <button type="submit">Login</button>
+    </div>
+</form>
+
+{% endblock %}

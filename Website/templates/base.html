@@ -14,8 +14,46 @@
     <body>
 
         <div class="navbar">
-            <a href="#home">Home</a><a href="#contact">Contact</a><a href="#account">Account</a>
+            {% if user.is_authenticated %}
+                <a href="/">Home</a>
+                <a href="contact">Contact</a>
+                <div class="account-dropdown">
+                    <button class="dropbtn" href="account">Account</button>
+                    <div class="dropdown-stuff">
+                        <a href="details">Details</a>
+                        <a href="change_password">Change Password</a>
+                        <a href="logout">Logout</a>
+                    </div>
+                </div>
+            {% else %}
+                <a href="login">Login</a>
+                <a href="create_account">Create Account</a>
+            {% endif %}
+            
         </div>
+
+        <!-- loop to display alerts -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'error' %}
+                        <div class="bad-alert">
+                            {{ message }}
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">
+                                &times;
+                            </span>
+                        </div>
+                    {% else %}
+                        <div class="good-alert">
+                            {{ message }}
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">
+                                &times;
+                            </span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
         <div class="content-container">{% block content %}{% endblock %}</div>
 
