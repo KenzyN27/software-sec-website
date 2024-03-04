@@ -2,38 +2,64 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
-from sqlalchemy.sql import text
+from email_validator import validate_email, EmailNotValidError
+from re import search
+from flask_login import login_user, login_required, logout_user, current_user
 
 # setup Blueprint for authentication webpages
 auth = Blueprint('auth', __name__)
+
+regex = '^(?=\S{8,20}$)(?=.+?\d)(?=.+?[a-z])(?=.+?[A-Z])(?=.+?[~!@#\$%\^&\*\(\)])'
+
+# ^(?=\S{8,20}$) -> at start of the string, match at the end, check for length of 8-20 characters that are non-whitespace
+# (?=.+?\d) -> look through string, check any character for one occurrence of a number
+# (?=.+?[a-z]) -> look through string, check any character for one occurrence of a lowercase
+# (?=.+?[A-Z]) -> look through string, check any character for one occurrence of a uppercase
+# (?=.+?[~!@#\$%\^&\*\(\)]) -> look through string, check any character for one occurrence of given symbols
+
+def validatePassword(pswd1, pswd2):
+    if pswd1 == pswd2:
+        # if lowercase, uppercase, number, and symbol exists with no whitespace
+        if search(regex, str(pswd1)) and not search('\s', str(pswd1)):
+            return True
+    flash("Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )", category='error')
+    return False
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
-        password = request.form.get('pswd')
+        pswd = request.form.get('pswd')
+        isRemembered = request.form.get('remember')
 
-        #usercheck = User.query.filter_by(email=email).first()
-
-        usercheck = db.session.execute(text("SELECT * FROM Users WHERE email = :e"), {'e': email}).fetchone()
+        usercheck = User.query.filter_by(email=email).first()
 
         #if usercheck:
         if usercheck:
-            if check_password_hash(usercheck[2], password):
+            if check_password_hash(usercheck.password, pswd):
                 flash("Logged in successfully!", category='success')
-                return redirect('views.home')
+                if isRemembered:
+                    login_user(usercheck)
+                else:
+                    login_user(usercheck)
+                # print(usercheck.id)
+                # print(usercheck.email)
+                # print(usercheck.password)
+                # print(usercheck.name)
+                return redirect(url_for('views.home'))
             else:
                 flash("Credentials given did not match our records. Try again.", category='error')
-            #print(usercheck[2])
         else :
-            flash("Email given does not have an account.", category='error')
+            flash("Given email does not have an account.", category='error')
 
 
-    return render_template("login.html")
+    return render_template("login.html", user=current_user)
 
 @auth.route('/logout')
+@login_required
 def logout():
-    return render_template("logout.html")
+    logout_user()
+    return redirect(url_for('auth.login'))
 
 @auth.route('/create_account', methods=['GET', 'POST'])
 def create_account():
@@ -43,33 +69,39 @@ def create_account():
         pswd1 = request.form.get('pswd1')
         pswd2 = request.form.get('pswd2')
 
-        if len(email) < 4:
-            flash("Email must be greater than 4 characters.", category='error')
-        elif len(name) < 2:
-            flash("First name must be greater than 1 character.", category='error')
-        elif pswd1 != pswd2:
-            flash("Passwords do not match.", category='error')
-        elif len(pswd1) < 7:
-            flash("Password must be secure. Requirements: At least 8 characters and can use lowercase, uppercase, or !@#$%^&()", category='error')
-        else:
+        try:
+            validate_email(email)
+            if len(name) < 2:
+                flash("First name must be greater than 1 character.", category='error')
+            elif validatePassword(pswd1, pswd2):
+                # check if user exists w/ email already
+                userresult = User.query.filter_by(email=email).first()
 
-            # check if user exists w/ email already
-            userresult = User.query.filter_by(email=email).first()
+                if userresult:
+                    flash("User already exists.", category='error')
+                else:
+                    newUser = User(email = email, password = generate_password_hash(pswd1, method='pbkdf2'), name = name)
+                    db.session.add(newUser)
+                    db.session.commit()
 
-            if userresult:
-                flash("User already exists.", category='error')
-            else:
-                #newUser = User(email = email, password = generate_password_hash(pswd1, method='pbkdf2'), name = name)
-                #db.session.add(newUser)
-                #db.session.commit()
-                #flash("Account created!", category='success')
-                # send user home
-                #return redirect(url_for('auth.login'))
-
-                addresult = db.session.execute(text("INSERT INTO Users (email, password, name) VALUES (:e, :p, :n)"), {'e': email, 'p': generate_password_hash(pswd1, method='pbkdf2'), 'n': name})
-                db.session.commit()
-                if addresult.rowcount == 1:
                     flash("Account created!", category='success')
                     return redirect(url_for('auth.login'))
+        except EmailNotValidError:
+            flash("Email must be a valid email.", category='error')
                    
-    return render_template("create_account.html")
+    return render_template("create_account.html", user=current_user)
+
+@auth.route('change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    if request.method == 'POST':
+        pswd1 = request.form.get('pswd1')
+        pswd2 = request.form.get('pswd2')
+
+        if validatePassword(pswd1, pswd2):
+            email = current_user.email
+            print(email)
+            flash("Password changed!", category='success')
+            return redirect(url_for('views.home'))
+            
+    return render_template("change_password.html", user=current_user)
