@@ -5,6 +5,7 @@ from . import db
 from email_validator import validate_email, EmailNotValidError
 from re import search
 from flask_login import login_user, login_required, logout_user, current_user
+from wtforms import Form, StringField, validators, PasswordField
 
 # setup Blueprint for authentication webpages
 auth = Blueprint('auth', __name__)
@@ -24,6 +25,11 @@ def validatePassword(pswd1, pswd2):
             return True
     flash("Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )", category='error')
     return False
+
+class CreateAccountForm(Form):
+    email = StringField('email', validators=[validators.InputRequired()])
+    name = StringField('name', validators=[validators.InputRequired(),validators.Length(min=4,max=320)])
+    pswd1 = PasswordField('pswd1')
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -60,30 +66,8 @@ def logout():
 @auth.route('/create_account', methods=['GET', 'POST'])
 def create_account():
     if request.method == 'POST':
-        email = request.form.get('email')
-        name = request.form.get('name')
-        pswd1 = request.form.get('pswd1')
-        pswd2 = request.form.get('pswd2')
-
-        try:
-            validate_email(email)
-            if len(name) < 2:
-                flash("First name must be greater than 1 character.", category='error')
-            elif validatePassword(pswd1, pswd2):
-                # check if user exists w/ email already
-                userresult = User.query.filter_by(email=email).first()
-
-                if userresult:
-                    flash("User already exists.", category='error')
-                else:
-                    newUser = User(email = email, password = generate_password_hash(pswd1, method='pbkdf2'), name = name)
-                    db.session.add(newUser)
-                    db.session.commit()
-
-                    flash("Account created!", category='success')
-                    return redirect(url_for('auth.login'))
-        except EmailNotValidError:
-            flash("Email must be a valid email.", category='error')
+        form = CreateAccountForm(request.form)
+        
                    
     return render_template("create_account.html", user=current_user)
 
