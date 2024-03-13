@@ -27,10 +27,10 @@ def validatePassword(pswd1, pswd2):
     return False
 
 class CreateAccountForm(Form):
-    email = StringField('email', validators=[validators.InputRequired(),validators.Email(message='Given email is not valid.')],render_kw={'placeholder':"Enter Email"})
+    email = StringField('email', validators=[validators.InputRequired(),validators.Length(min=4)],render_kw={'placeholder':"Enter Email"})
     name = StringField('name', validators=[validators.InputRequired(),validators.Length(min=4,max=320)],render_kw={'placeholder':"Enter Name"})
     pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.regexp(regex, message='Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )')],render_kw={'placeholder':"Enter Password"})
-    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=20),validators.EqualTo('pswd1', message='Passwords must match')],render_kw={'placeholder':"Enter Password Confirmation"})
+    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=20),validators.EqualTo('pswd1', message='Passwords must match.')],render_kw={'placeholder':"Confirm Password"})
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -67,10 +67,23 @@ def logout():
 @auth.route('/create_account', methods=['GET', 'POST'])
 def create_account():
     form = CreateAccountForm(request.form)
-    if request.method == 'POST':
+    if request.method == 'POST' and form.validate():
+        # check if user exists w/ email already
+        userresult = User.query.filter_by(email=form.email.data).first()
+
+        if userresult:
+            flash("User already exists.", category='error')
+        else:
+            if not search('\s', form.pswd1.data):
+                newUser = User(email = form.email.data, password = generate_password_hash(form.pswd1.data, method='pbkdf2'), name = form.name.data)
+                db.session.add(newUser)
+                db.session.commit()
+
+                flash("Account created!", category='success')
+                return redirect(url_for('auth.login'))
+            else:
+                flash('Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )', category='error')
         
-        
-                   
     return render_template("create_account.html", user=current_user, form=form)
 
 @auth.route('change_password', methods=['GET', 'POST'])
