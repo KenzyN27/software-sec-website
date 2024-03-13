@@ -29,7 +29,8 @@ def validatePassword(pswd1, pswd2):
 class CreateAccountForm(Form):
     email = StringField('email', validators=[validators.InputRequired()])
     name = StringField('name', validators=[validators.InputRequired(),validators.Length(min=4,max=320)])
-    pswd1 = PasswordField('pswd1')
+    pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.Length(min=4,max=20)])
+    pswd2 = PasswordField('pswd2', )
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
