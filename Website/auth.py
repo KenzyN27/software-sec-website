@@ -39,13 +39,9 @@ def login():
             if check_password_hash(usercheck.password, pswd):
                 flash("Logged in successfully!", category='success')
                 if isRemembered:
-                    login_user(usercheck)
+                    login_user(usercheck, remember=True)
                 else:
-                    login_user(usercheck)
-                # print(usercheck.id)
-                # print(usercheck.email)
-                # print(usercheck.password)
-                # print(usercheck.name)
+                    login_user(usercheck, remember=False)
                 return redirect(url_for('views.home'))
             else:
                 flash("Credentials given did not match our records. Try again.", category='error')
