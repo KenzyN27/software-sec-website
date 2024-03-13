@@ -27,10 +27,10 @@ def validatePassword(pswd1, pswd2):
     return False
 
 class CreateAccountForm(Form):
-    email = StringField('email', validators=[validators.InputRequired()])
+    email = StringField('email', validators=[validators.InputRequired(),validators.Email(message="Given email is not valid.")])
     name = StringField('name', validators=[validators.InputRequired(),validators.Length(min=4,max=320)])
     pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.Length(min=4,max=20)])
-    pswd2 = PasswordField('pswd2', )
+    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=4, max=20)])
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
