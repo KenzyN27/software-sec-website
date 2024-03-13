@@ -27,10 +27,10 @@ def validatePassword(pswd1, pswd2):
     return False
 
 class CreateAccountForm(Form):
-    email = StringField('email', validators=[validators.InputRequired(),validators.Email(message='Given email is not valid.')])
-    name = StringField('name', validators=[validators.InputRequired(),validators.Length(min=4,max=320)])
-    pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.regexp(regex, message='Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )')])
-    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=20),validators.EqualTo('pswd1', message='Passwords must match')])
+    email = StringField('email', validators=[validators.InputRequired(),validators.Email(message='Given email is not valid.')],render_kw={'placeholder':"Enter Email"})
+    name = StringField('name', validators=[validators.InputRequired(),validators.Length(min=4,max=320)],render_kw={'placeholder':"Enter Name"})
+    pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.regexp(regex, message='Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )')],render_kw={'placeholder':"Enter Password"})
+    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=20),validators.EqualTo('pswd1', message='Passwords must match')],render_kw={'placeholder':"Enter Password Confirmation"})
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -68,7 +68,7 @@ def logout():
 def create_account():
     form = CreateAccountForm(request.form)
     if request.method == 'POST':
-        print("post")
+        
         
                    
     return render_template("create_account.html", user=current_user, form=form)
