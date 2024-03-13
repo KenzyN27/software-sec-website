@@ -34,6 +34,7 @@ def create_app():
     # login manager defined
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
+    # strong protection to keep session from being stolen
     login_manager.session_protection = 'strong'
     login_manager.init_app(app)
 

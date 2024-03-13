@@ -4,30 +4,27 @@
 
 <link rel="stylesheet" href="../static/styles/formstyle.css">
 
+{% for field, errors in form.errors.items() %}
+    <div class="bad-alert">
+        {{ ''.join(errors) }}
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">
+            &times;
+        </span>
+    </div>
+{% endfor %}
+
 <form method="POST">
     <h2 align="center">Login</h2>
     <div class="account-form">
         <label for="email">Email:</label>
         <br />
-        <input
-            type="text"
-            placeholder="Enter Email"
-            id="email"
-            name="email"
-            required
-        >
+        {{form.email()}}
     </div>
 
     <div class="account-form">
         <label for="pswd">Password:</label>
         <br />
-        <input
-            type="password"
-            placeholder="Enter password"
-            id="pswd"
-            name="pswd"
-            required
-        >
+        {{form.pswd()}}
     </div>
 
     <div class="account-form">

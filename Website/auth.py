@@ -18,22 +18,23 @@ regex = '^(?=\S{8,20}$)(?=.+?\d)(?=.+?[a-z])(?=.+?[A-Z])(?=.+?[~!@#\$%\^&\*\(\)]
 # (?=.+?[A-Z]) -> look through string, check any character for one occurrence of a uppercase
 # (?=.+?[~!@#\$%\^&\*\(\)]) -> look through string, check any character for one occurrence of given symbols
 
-def validatePassword(pswd1, pswd2):
-    if pswd1 == pswd2:
-        # if lowercase, uppercase, number, and symbol exists with no whitespace
-        if search(regex, str(pswd1)) and not search('\s', str(pswd1)):
-            return True
-    flash("Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )", category='error')
-    return False
-
 class CreateAccountForm(Form):
     email = StringField('email', validators=[validators.InputRequired(),validators.Length(min=4)],render_kw={'placeholder':"Enter Email"})
     name = StringField('name', validators=[validators.InputRequired(),validators.Length(min=4,max=320)],render_kw={'placeholder':"Enter Name"})
     pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.regexp(regex, message='Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )')],render_kw={'placeholder':"Enter Password"})
     pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=20),validators.EqualTo('pswd1', message='Passwords must match.')],render_kw={'placeholder':"Confirm Password"})
 
+class LoginForm(Form):
+    email = StringField('email', validators=[validators.InputRequired(),validators.Length(min=4)],render_kw={'placeholder':"Enter Email"})
+    pswd = PasswordField('pswd', validators=[validators.InputRequired(),validators.Length(min=8,max=20)], render_kw={'placeholder':"Enter Password"})
+
+class ChangePasswordForm(Form):
+    pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.regexp(regex, message='Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )')],render_kw={'placeholder':"Enter New Password"})
+    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=20),validators.EqualTo('pswd1', message='Passwords must match.')],render_kw={'placeholder':"Confirm New Password"})
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    form = LoginForm(request.form)
     if request.method == 'POST':
         email = request.form.get('email')
         pswd = request.form.get('pswd')
@@ -56,7 +57,7 @@ def login():
             flash("Given email does not have an account.", category='error')
 
 
-    return render_template("login.html", user=current_user)
+    return render_template("login.html", user=current_user, form=form)
 
 @auth.route('/logout')
 @login_required
@@ -74,16 +75,20 @@ def create_account():
         if userresult:
             flash("User already exists.", category='error')
         else:
-            if not search('\s', form.pswd1.data):
-                newUser = User(email = form.email.data, password = generate_password_hash(form.pswd1.data, method='pbkdf2'), name = form.name.data)
-                db.session.add(newUser)
-                db.session.commit()
+            try:
+                validate_email(form.email.data)
+                if not search('\s', form.pswd1.data):
+                    newUser = User(email = form.email.data, password = generate_password_hash(form.pswd1.data, method='pbkdf2'), name = form.name.data)
+                    db.session.add(newUser)
+                    db.session.commit()
 
-                flash("Account created!", category='success')
-                return redirect(url_for('auth.login'))
-            else:
-                flash('Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )', category='error')
-        
+                    flash("Account created!", category='success')
+                    return redirect(url_for('auth.login'))
+                else:
+                    flash('Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )', category='error')
+            except EmailNotValidError:
+                flash("Email must be a valid email.", category='error')
+
     return render_template("create_account.html", user=current_user, form=form)
 
 @auth.route('change_password', methods=['GET', 'POST'])
