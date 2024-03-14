@@ -84,7 +84,7 @@ def create_account():
                 flash("User already exists.", category='error')
             else:
                 if not search('\s', form.pswd1.data):
-                    newUser = User(email = form.email.data, password = generate_password_hash(form.pswd1.data, method='pbkdf2'), name = form.name.data, dateOfBirth = form.dob.data)
+                    newUser = User(email = form.email.data, password = generate_password_hash(form.pswd1.data, method='pbkdf2', salt_length=16), name = form.name.data, dateOfBirth = form.dob.data)
                     db.session.add(newUser)
                     db.session.commit()
 
@@ -102,8 +102,8 @@ def create_account():
 def change_password():
     form = ChangePasswordForm(request.form)
     if request.method == 'POST' and form.validate_on_submit():
-
-        
+        current_user.password = generate_password_hash(form.pswd1.data, method='pbkdf2', salt_length=16)
+        db.commit()
         flash("Password changed!", category='success')
         return redirect(url_for('views.home'))
             

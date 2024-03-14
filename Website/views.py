@@ -1,10 +1,12 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from flask_login import login_required, current_user
 from wtforms import Form, StringField, validators
 from flask_wtf import FlaskForm
 
 # setup Blueprint for views not related to authentication
 views = Blueprint('views', __name__)
+
+contact_title = ""
 
 class ContactForm(FlaskForm):
     title = StringField('title', validators=[validators.InputRequired(),validators.Length(min=4,max=100)])
@@ -21,6 +23,8 @@ def home():
 def contact():
     form = ContactForm(request.form)
     if request.method == 'POST' and form.validate_on_submit():
+        session['title'] = form.title.data
+        print(form.title.data)
         return redirect(url_for('views.contact_submit'))
     return render_template("contact.html", user=current_user, form=form)
 
@@ -32,4 +36,4 @@ def account():
 @views.route('/contact_submit')
 @login_required
 def contact_submit():
-    return render_template("submit.html", user=current_user)
+    return render_template("submit.html", user=current_user, title=session['title'])
