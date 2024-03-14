@@ -1,5 +1,29 @@
 {% extends "base.html" %} {% block title %}Contact{% endblock %}
 
 {% block content %}
-<h1>This is the contact page.</h1>
+
+<link rel="stylesheet" href="../static/styles/formstyle.css">
+
+<form method="POST">
+    {{form.csrf_token}}
+    
+    <h2 align="center">Contact Form</h2>
+
+    <div class="account-form">
+        <label for="title">Subject:</label>
+        <br />
+        {{form.title()}}
+        
+        <div class="form-content">
+            <label for="content">Content:</label>
+            <br />
+            {{form.content()}}
+        </div>
+    </div>
+
+    <div class="button-form">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
 {% endblock %}
