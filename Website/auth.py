@@ -5,7 +5,7 @@ from . import db
 from email_validator import validate_email, EmailNotValidError
 from re import search
 from flask_login import login_user, login_required, logout_user, current_user
-from wtforms import Form, StringField, validators, PasswordField
+from wtforms import Form, StringField, validators, PasswordField, DateTimeField
 from flask_wtf import FlaskForm
 
 # setup Blueprint for authentication webpages
@@ -22,6 +22,7 @@ regex = '^(?=\S{8,30}$)(?=.+?\d)(?=.+?[a-z])(?=.+?[A-Z])(?=.+?[~!@#\$%\^&\*\(\)]
 class CreateAccountForm(FlaskForm):
     email = StringField('email', validators=[validators.InputRequired(),validators.Length(min=4)],render_kw={'placeholder':"Enter Email"})
     name = StringField('name', validators=[validators.InputRequired(),validators.Length(min=4,max=320)],render_kw={'placeholder':"Enter Name"})
+    dob = DateTimeField('dob', validators=[validators.InputRequired()], format='%Y-%m-%d')
     pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.regexp(regex, message='Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )')],render_kw={'placeholder':"Enter Password"})
     pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=20),validators.EqualTo('pswd1', message='Passwords must match.')],render_kw={'placeholder':"Confirm Password"})
 
@@ -83,7 +84,7 @@ def create_account():
                 flash("User already exists.", category='error')
             else:
                 if not search('\s', form.pswd1.data):
-                    newUser = User(email = form.email.data, password = generate_password_hash(form.pswd1.data, method='pbkdf2'), name = form.name.data)
+                    newUser = User(email = form.email.data, password = generate_password_hash(form.pswd1.data, method='pbkdf2'), name = form.name.data, dateOfBirth = form.dob.data)
                     db.session.add(newUser)
                     db.session.commit()
 
@@ -91,10 +92,8 @@ def create_account():
                     return redirect(url_for('auth.login'))
                 else:
                     flash('Password must be secure. Requirements: A length of 8 to 30 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )', category='error')
-                    return redirect(url_for('auth.create_account'))
         except EmailNotValidError:
             flash("Email must be a valid email.", category='error')
-            return redirect(url_for('auth.create_account'))
 
     return render_template("create_account.html", user=current_user, form=form)
 

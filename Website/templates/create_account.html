@@ -21,21 +21,19 @@
         <label for="name">Name:</label>
         <br />
         {{form.name()}}
-    </div>
 
-    <div class="account-form">
         <label for="email">Email Address:</label>
         <br />
         {{form.email()}}
-    </div>
 
-    <div class="account-form">
+        <label for="dob">Date of Birth:</label>
+        <br />
+        {{form.dob(type="date")}}
+
         <label for="pswd1">Password:</label>
         <br />
         {{form.pswd1()}}
-    </div>
 
-    <div class="account-form">
         <label for="pswd2">Confirm Password:</label>
         <br />
         {{form.pswd2()}}
