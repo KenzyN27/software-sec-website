@@ -97,3 +97,7 @@ body {
 .good-alert .closebtn:hover {
     color: #3a7446;
 }
+
+.content-container {
+    align-items: center;
+}

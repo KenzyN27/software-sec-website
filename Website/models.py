@@ -2,7 +2,7 @@ from . import db
 from flask_login import UserMixin
 
 class User(db.Model, UserMixin):
-    # have a separate ID as primary key instead of the email due to uniqueness/scecurity
+    # have a separate ID as primary key instead of the email due to uniqueness/security
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)

@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
 from os import path
 from flask_login import LoginManager
 
@@ -11,7 +12,7 @@ def create_app():
     # secret key to encrypt communication
 
     # CHANGE HOW THE KEY IS IMPLEMENTED LATER
-    app.config['SECRET_KEY'] = "4ZqUkSkzQgdGTdqQtf1o73UqejhqTw6uu5mbaD7zkDE="
+    app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
@@ -30,6 +31,10 @@ def create_app():
     # SQLAlchemy was updated to automatically not replace db if already there. Created as follows:
     with app.app_context():
         db.create_all()
+
+    # CSRF define
+    csrf = CSRFProtect()
+    csrf.init_app(app)
 
     # login manager defined
     login_manager = LoginManager()
