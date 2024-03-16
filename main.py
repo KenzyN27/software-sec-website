@@ -1,4 +1,4 @@
-from website import create_app
+from Website import create_app
 from dotenv import load_dotenv
 
 load_dotenv('.env')
