@@ -1,11 +1,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
-from os import path
+from os import environ
 from flask_login import LoginManager
 
 db = SQLAlchemy()
-DB_NAME = "database.db"
 
 def create_app():
     app = Flask(__name__)
@@ -13,7 +12,7 @@ def create_app():
 
     # CHANGE HOW THE KEY IS IMPLEMENTED LATER
     app.config.from_pyfile('config.py')
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL')
     db.init_app(app)
 
     # give app the Blueprints
