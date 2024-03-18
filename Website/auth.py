@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
-from werkzeug.security import generate_password_hash, check_password_hash
-from . import db
+from . import db, bcrypt
 from email_validator import validate_email, EmailNotValidError
 from re import search
 from flask_login import login_user, login_required, logout_user, current_user
@@ -44,7 +43,7 @@ def login():
         if usercheck:
             if usercheck.loginAttempts >= 5:
                 flash("User is locked out. Contact administration to fix.", category='error')
-            elif check_password_hash(usercheck.password, form.pswd.data):
+            elif bcrypt.check_password_hash(usercheck.password, form.pswd.data):
                 flash("Logged in successfully!", category='success')
                 login_user(usercheck)
                 usercheck.loginAttempts = 0
@@ -84,7 +83,7 @@ def create_account():
                 flash("User already exists.", category='error')
             else:
                 if not search('\s', form.pswd1.data):
-                    newUser = User(email = form.email.data, password = generate_password_hash(form.pswd1.data, method='pbkdf2', salt_length=16), name = form.name.data, dateOfBirth = form.dob.data)
+                    newUser = User(email = form.email.data, password = bcrypt.generate_password_hash(form.pswd1.data), name = form.name.data, dateOfBirth = form.dob.data)
                     db.session.add(newUser)
                     db.session.commit()
 
@@ -102,7 +101,7 @@ def create_account():
 def change_password():
     form = ChangePasswordForm(request.form)
     if request.method == 'POST' and form.validate_on_submit():
-        current_user.password = generate_password_hash(form.pswd1.data, method='pbkdf2', salt_length=16)
+        current_user.password = bcrypt.generate_password_hash(form.pswd1.data)
         db.commit()
         flash("Password changed!", category='success')
         return redirect(url_for('views.home'))

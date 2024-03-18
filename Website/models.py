@@ -11,3 +11,4 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(71), nullable=False)
     dateOfBirth = db.Column(db.Date)
     loginAttempts = db.Column(db.Integer(), nullable=False, default=0)
+    isAdmin = db.Column(db.Boolean, nullable=False, default=False)
