@@ -1,19 +1,31 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
+from flask_talisman import Talisman
 from os import environ
 from flask_login import LoginManager
+from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
+
+bcrypt = Bcrypt()
+
+talisman = Talisman()
+
+csp = {
+    'default-src': '\'self\'',
+    'object-src': '\'none\'',
+}
 
 def create_app():
     app = Flask(__name__)
     # secret key to encrypt communication
 
-    # CHANGE HOW THE KEY IS IMPLEMENTED LATER
     app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL')
     db.init_app(app)
+    bcrypt.init_app(app)
+    talisman.init_app(app, content_security_policy=csp, x_xss_protection = True, session_cookie_secure = True)
 
     # give app the Blueprints
     from .views import views
@@ -38,6 +50,7 @@ def create_app():
     # login manager defined
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
+    login_manager.login_message = ''
     # strong protection to keep session from being stolen
     login_manager.session_protection = 'strong'
     login_manager.init_app(app)
