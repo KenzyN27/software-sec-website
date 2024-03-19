@@ -24,15 +24,15 @@ class CreateAccountForm(FlaskForm):
     name = StringField('name', validators=[validators.InputRequired(),validators.Length(min=4,max=320)],render_kw={'placeholder':"Enter Name"})
     dob = DateTimeField('dob', validators=[validators.InputRequired()], format='%Y-%m-%d')
     pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.regexp(regex, message='Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )')],render_kw={'placeholder':"Enter Password"})
-    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=20),validators.EqualTo('pswd1', message='Passwords must match.')],render_kw={'placeholder':"Confirm Password"})
+    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=30),validators.EqualTo('pswd1', message='Passwords must match.')],render_kw={'placeholder':"Confirm Password"})
 
 class LoginForm(FlaskForm):
     email = StringField('email', validators=[validators.InputRequired(),validators.Length(min=4)],render_kw={'placeholder':"Enter Email"})
-    pswd = PasswordField('pswd', validators=[validators.InputRequired(),validators.Length(min=8,max=20)], render_kw={'placeholder':"Enter Password"})
+    pswd = PasswordField('pswd', validators=[validators.InputRequired(),validators.Length(min=8,max=30)], render_kw={'placeholder':"Enter Password"})
 
 class ChangePasswordForm(FlaskForm):
     pswd1 = PasswordField('pswd1', validators=[validators.InputRequired(),validators.regexp(regex, message='Password must be secure. Requirements: A length of 8 to 20 characters, no spaces, and must contain at least one of each of the following: lowercase, uppercase, a number, and a symbol ( ~!@#$%^&*() )')],render_kw={'placeholder':"Enter New Password"})
-    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=20),validators.EqualTo('pswd1', message='Passwords must match.')],render_kw={'placeholder':"Confirm New Password"})
+    pswd2 = PasswordField('pswd2', validators=[validators.InputRequired(),validators.Length(min=8, max=30),validators.EqualTo('pswd1', message='Passwords must match.')],render_kw={'placeholder':"Confirm New Password"})
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
