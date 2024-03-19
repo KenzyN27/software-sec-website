@@ -48,4 +48,4 @@ def user_list():
         return render_template("userlist.html", users=users, user=current_user)
     else:
         print("Not admin")
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.home'), user=current_user)
