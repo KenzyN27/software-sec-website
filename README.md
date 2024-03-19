@@ -68,7 +68,7 @@ Run the docker container with the following command:
 docker run -d -p 5001:5001 softwaresecwebsite:latest
 ```
 
-**NOTE: the Dockerfile and `dockermain.py` as is has been configured to be accessed via ht<span>tps://</span>127.0.0.1:5001**
+**NOTE: the Dockerfile and `dockermain.py` as is have been configured to be accessed via ht<span>tps://</span>127.0.0.1:5001**
 
 ## Accessing Admin Webpage
 There is one link restricted to an Admin user in this web app. To change a user to Admin, open the database file in a database editor and change the value stored in the isAdmin column to 1 to access that webpage.
