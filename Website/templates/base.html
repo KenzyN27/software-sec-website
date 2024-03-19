@@ -15,24 +15,24 @@
 
         <div class="navbar">
             {% if user.is_authenticated %}
-                <a href="/">Home</a>
-                <a href="contact">Contact</a>
+                <a href="/" name="item">Home</a>
+                <a href="contact" name="item">Contact</a>
                 {% if user.isAdmin == 1 %}
-                    <a href="user_list">User List</a>
+                    <a href="user_list" name="item">User List</a>
                 {% endif %}
                 <div class="account-dropdown">
                     <button class="dropbtn" href="account">Account</button>
                     <div class="dropdown-stuff">
-                        <a href="details">Account Details</a>
-                        <a href="change_password">Change Password</a>
-                        <a href="logout">Logout</a>
+                        <a href="details" name="item">Account Details</a>
+                        <a href="change_password" name="item">Change Password</a>
+                        <a href="logout" name="item">Logout</a>
                     </div>
                 </div>
             {% else %}
-                <a href="login">Login</a>
-                <a href="create_account">Create Account</a>
+                <a href="login" name="item">Login</a>
+                <a href="create_account" name="item">Create Account</a>
             {% endif %}
-            
+            <a name="logo">Software Security Website</a>
         </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}

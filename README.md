@@ -4,11 +4,13 @@ The main focus was to secure the login/create account page from attacks like SQL
 
 This is a website that uses Python and multiple Flask libraries in the backend. It uses a SQLite database for the users that is created when the app runs and does not detect a database file.
 
+![A gif showing logging in to the website](https://imgur.com/a/jXo5rwX)
+
 # Setting up the Web App
 # Python Version
 This web app was created with Python 3.12.1.
 
-Refer to the folder structure printed later in the ReadME for clarification in file placement.
+Refer to the folder structure at the end for clarification in file placement.
 
 ## Installing the packages
 This web app uses python and Flask packages to implement web app fuctionality and security. The required packages are listed below:
@@ -66,9 +68,12 @@ Run the docker container with the following command:
 docker run -d -p 5001:5001 softwaresecwebsite:latest
 ```
 
+**NOTE: the Dockerfile and `dockermain.py` as is has been configured to be accessed via ht<span>tps://</span>127.0.0.1:5001**
 
+## Accessing Admin Webpage
+There is one link restricted to an Admin user in this web app. To change a user to Admin, open the database file in a database editor and change the value stored in the isAdmin column to 1 to access that webpage.
 
-# General Folder Structure
+# Folder Structure
 ```
 software-sec-website
 │   README.md
