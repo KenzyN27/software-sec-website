@@ -4,7 +4,7 @@ The main focus was to secure the login/create account page from attacks like SQL
 
 This is a website that uses Python and multiple Flask libraries in the backend. It uses a SQLite database for the users that is created when the app runs and does not detect a database file.
 
-![A gif showing logging in to the website](https://imgur.com/a/jXo5rwX)
+![A gif showing logging in to the website](https://imgur.com/a/jXo5rwX.jpg)
 
 # Setting up the Web App
 # Python Version
