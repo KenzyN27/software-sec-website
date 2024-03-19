@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block title %}User List{% endblock %}
+
+{% block content %}
+<h1 align="center">User List</h1>
+<table align="center">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Date of Birth</th>
+        <th>Login Attempts</th>
+        <th>Is Admin</th>
+    </tr>
+    {% for eachuser in users %}
+        <tr>
+            <td>{{eachuser.id}}</td>
+            <td>{{eachuser.name}}</td>
+            <td>{{eachuser.email}}</td>
+            <td>{{eachuser.dateOfBirth}}</td>
+            <td>{{eachuser.loginAttempts}}</td>
+            <td>{{eachuser.isAdmin}}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

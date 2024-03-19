@@ -29,6 +29,9 @@
                 <a href="login">Login</a>
                 <a href="create_account">Create Account</a>
             {% endif %}
+            {% if user.isAdmin == 1 %}
+                <a href="user_list">User List</a>
+            {% endif %}
             
         </div>
 
@@ -39,16 +42,10 @@
                     {% if category == 'error' %}
                         <div class="bad-alert">
                             {{ message }}
-                            <span class="closebtn" onclick="this.parentElement.style.display='none';">
-                                &times;
-                            </span>
                         </div>
                     {% else %}
                         <div class="good-alert">
                             {{ message }}
-                            <span class="closebtn" onclick="this.parentElement.style.display='none';">
-                                &times;
-                            </span>
                         </div>
                     {% endif %}
                 {% endfor %}

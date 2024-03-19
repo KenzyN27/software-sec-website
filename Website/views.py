@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from flask_login import login_required, current_user
 from wtforms import Form, StringField, validators
 from flask_wtf import FlaskForm
+from .models import User
 
 # setup Blueprint for views not related to authentication
 views = Blueprint('views', __name__)
@@ -37,3 +38,14 @@ def account():
 @login_required
 def contact_submit():
     return render_template("submit.html", user=current_user, title=session['title'])
+
+@views.route('/user_list')
+@login_required
+def user_list():
+    if current_user.isAdmin == 1:
+        print("Is admin")
+        users = User.query.all()
+        return render_template("userlist.html", users=users, user=current_user)
+    else:
+        print("Not admin")
+        return redirect(url_for('views.home'))

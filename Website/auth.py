@@ -4,13 +4,14 @@ from . import db, bcrypt
 from email_validator import validate_email, EmailNotValidError
 from re import search
 from flask_login import login_user, login_required, logout_user, current_user
-from wtforms import Form, StringField, validators, PasswordField, DateTimeField
+from wtforms import StringField, validators, PasswordField, DateTimeField
 from flask_wtf import FlaskForm
+import datetime
 
 # setup Blueprint for authentication webpages
 auth = Blueprint('auth', __name__)
 
-regex = '^(?=\S{8,30}$)(?=.+?\d)(?=.+?[a-z])(?=.+?[A-Z])(?=.+?[~!@#\$%\^&\*\(\)])'
+regex = '^(?=\\S{8,30}$)(?=.+?\\d)(?=.+?[a-z])(?=.+?[A-Z])(?=.+?[~!@#$%^&*()])'
 
 # ^(?=\S{8,20}$) -> at start of the string, match at the end, check for length of 8-20 characters that are non-whitespace
 # (?=.+?\d) -> look through string, check any character for one occurrence of a number
@@ -45,7 +46,7 @@ def login():
                 flash("User is locked out. Contact administration to fix.", category='error')
             elif bcrypt.check_password_hash(usercheck.password, form.pswd.data):
                 flash("Logged in successfully!", category='success')
-                login_user(usercheck)
+                login_user(usercheck, duration=datetime.timedelta(minutes=5))
                 usercheck.loginAttempts = 0
                 db.session.commit()
                 return redirect(url_for('views.home'))
@@ -82,7 +83,7 @@ def create_account():
             if userresult:
                 flash("User already exists.", category='error')
             else:
-                if not search('\s', form.pswd1.data):
+                if not search('\\s', form.pswd1.data):
                     newUser = User(email = form.email.data, password = bcrypt.generate_password_hash(form.pswd1.data), name = form.name.data, dateOfBirth = form.dob.data)
                     db.session.add(newUser)
                     db.session.commit()
@@ -102,7 +103,7 @@ def change_password():
     form = ChangePasswordForm(request.form)
     if request.method == 'POST' and form.validate_on_submit():
         current_user.password = bcrypt.generate_password_hash(form.pswd1.data)
-        db.commit()
+        db.session.commit()
         flash("Password changed!", category='success')
         return redirect(url_for('views.home'))
             

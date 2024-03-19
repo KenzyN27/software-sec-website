@@ -7,9 +7,6 @@
 {% for field, errors in form.errors.items() %}
     <div class="bad-alert">
         {{ ''.join(errors) }}
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">
-            &times;
-        </span>
     </div>
 {% endfor %}
 

@@ -4,6 +4,7 @@ Flask-Login
 Flask-WTF
 Flask-Bcrypt
 Flask-Talisman
+Flask-Security
 werkzeug
 email_validator
 load_dotenv

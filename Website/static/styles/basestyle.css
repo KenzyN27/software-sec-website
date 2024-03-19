@@ -101,3 +101,18 @@ body {
 .content-container {
     align-items: center;
 }
+
+table {
+    border-collapse: collapse;
+    width:75%
+}
+
+td, th {
+    border: 1px solid #d67ab1;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #eedce5;
+}
