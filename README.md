@@ -7,7 +7,7 @@ This is a website that uses Python and multiple Flask libraries in the backend. 
 ![A gif logging into the web app.](https://i.imgur.com/9OQtCCJ.gif)
 
 # Setting up the Web App
-# Python Version
+## Python Version
 This web app was created with Python 3.12.1.
 
 Refer to the folder structure at the end for clarification in file placement.
