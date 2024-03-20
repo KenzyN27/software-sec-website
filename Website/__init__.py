@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from flask_talisman import Talisman
+import os
 from os import environ
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
@@ -58,5 +59,10 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
+    
+    # @app.route('/favicon.ico')
+    # def favicon():
+    #     return send_from_directory(os.path.join(app.root_path, 'static'),
+    #                            'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
     return app
