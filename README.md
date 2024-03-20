@@ -7,10 +7,16 @@ This is a website that uses Python and multiple Flask libraries in the backend. 
 ![A gif logging into the web app.](https://i.imgur.com/9OQtCCJ.gif)
 
 # Setting up the Web App
+## Installation
+You can clone the repository using the following command:
+```
+git clone https://github.com/KenzyN27/software-sec-website.git
+```
+The project will then need to be opened in an IDE of your choice to add in some parameters before execution.
+Refer to the folder structure at the end for clarification in file placement.
+
 ## Python Version
 This web app was created with Python 3.12.1.
-
-Refer to the folder structure at the end for clarification in file placement.
 
 ## Installing the packages
 This web app uses python and Flask packages to implement web app fuctionality and security. The required packages are listed below:
@@ -47,6 +53,11 @@ openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 36
 ```
 Make sure the files are named `key.pem` and `cert.pem`, otherwise the main executable file will need to be changed to accomodate a different file name.
 
+### Connection Not Secure Warning
+Since the certificate is self-signed and not created by a trusted source, browsers will warn users about the connection not being secure. This can be ignored in the project's purpose as the self-signed certificate is meant to demonstrate HTTPS and is not running on a production server.
+
+To ignore these warnings, open advanced options and proceed/continue to the localhost address.
+
 # Running the Web App
 I have included two ways of running the web app. One way is with `main.py` in a command-line terminal, and the other is through a docker container using the included Dockerfile.
 
@@ -71,7 +82,7 @@ docker run -d -p 5001:5001 softwaresecwebsite:latest
 **NOTE: the Dockerfile and `dockermain.py` as is have been configured to be accessed via ht<span>tps://</span>127.0.0.1:5001**
 
 ## Accessing Admin Webpage
-There is one link restricted to an Admin user in this web app. To change a user to Admin, open the database file in a database editor and change the value stored in the isAdmin column to 1 to access that webpage.
+There is one webpage link restricted to an Admin user in this web app. To change a user to Admin, open the database file in a database editor and change the value stored in the isAdmin column of the desired user to 1 to access that webpage.
 
 # Folder Structure
 ```
