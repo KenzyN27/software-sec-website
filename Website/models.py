@@ -1,5 +1,9 @@
-from . import db
+from . import db, app
 from flask_login import UserMixin
+import jwt
+from time import time
+from os import environ
+from itsdangerous import URLSafeTimedSerializer as Serializer
 
 class User(db.Model, UserMixin):
     # have a separate ID as primary key instead of the email due to uniqueness/security
@@ -12,3 +16,16 @@ class User(db.Model, UserMixin):
     dateOfBirth = db.Column(db.Date)
     loginAttempts = db.Column(db.Integer(), nullable=False, default=0)
     isAdmin = db.Column(db.Boolean, nullable=False, default=False)
+
+    def get_reset_token(self):
+        serial = Serializer(app.config.get('SECRET_KEY'))
+        return serial.dumps([self.email])
+    
+    def verify_token(token):
+        serial=Serializer(app.config.get('SECRET_KEY'))
+        try:
+            data = serial.loads(token)
+            email = data[0]
+        except:
+            return None
+        return User.query.filter_by(email=email).first()

@@ -31,7 +31,7 @@ def contact():
 
 @views.route('/details')
 @login_required
-def account():
+def details():
     return render_template("details.html", user=current_user)
 
 @views.route('/contact_submit')
