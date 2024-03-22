@@ -4,7 +4,7 @@ The main focus was to secure the login/create account page from attacks like SQL
 
 This is a website that uses Python and multiple Flask libraries in the backend. It uses a SQLite database for the users that is created when the app runs and does not detect a database file.
 
-![A gif logging into the web app.](https://i.imgur.com/9OQtCCJ.gif)
+![A gif logging into the web app.](https://i.imgur.com/zYmYoVy.gif)
 
 # Setting up the Web App
 ## Installation
@@ -120,9 +120,11 @@ software-sec-website
 │   |   │   contact.html
 │   |   │   create_account.html
 │   |   │   details.html
+|   |   |   forgot_password.html
 │   |   │   home.html
 │   |   │   login.html
 │   |   │   logout.html
+|   |   |   reset_password.html
 │   |   │   submit.html
 │   |   │   userlist.html
 ```
