@@ -2,6 +2,7 @@ from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from flask_talisman import Talisman
+from flask_mail import Mail
 import os
 from os import environ
 from flask_login import LoginManager
@@ -13,20 +14,26 @@ bcrypt = Bcrypt()
 
 talisman = Talisman()
 
+mail = Mail()
+
+app = Flask(__name__)
+
 csp = {
     'default-src': '\'self\'',
     'object-src': '\'none\'',
 }
 
 def create_app():
-    app = Flask(__name__)
-    # secret key to encrypt communication
-
     app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL')
     db.init_app(app)
     bcrypt.init_app(app)
     talisman.init_app(app, content_security_policy=csp, x_xss_protection = True, session_cookie_secure = True)
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_USE_TLS'] = 587
+    app.config['MAIL_USE_TLS'] = True
+   
+    mail.init_app(app)
 
     # give app the Blueprints
     from .views import views

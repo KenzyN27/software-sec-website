@@ -26,8 +26,10 @@ This web app uses python and Flask packages to implement web app fuctionality an
 - Flask-WTF 1.2.1
 - Flask-Bcrypt 1.0.1
 - Flask-Talisman 1.1.0
+- Flask-Mail 0.9.1
 - email_validator 2.1.1
 - python_dotenv 1.0.1
+- itsdangerous 2.1.2
 
 I have included a txt file with all the packages and their versions when I made this web app. They can be installed by using the command below:
 ```
@@ -35,13 +37,15 @@ pip install -r packages.txt
 ```
 
 ## Environment File
-The app in its current configuration needs an environment file created that contains `SECRET_KEY`, `DATABASE_URL`, and `BCRYPT_LOG_ROUNDS`, as including them in `__init__.py` is generally considered insecure. Create this file in the `software-sec-website` folder.
+The app in its current configuration needs an environment file created that contains `SECRET_KEY`, `DATABASE_URL`, `BCRYPT_LOG_ROUNDS`, `EMAIL`, and `EMAIL PASSWORD`, as including them in `__init__.py` is generally considered insecure. Create this file in the `software-sec-website` folder.
 
 Example:
 ```
 SECRET_KEY='thisisasecretkey'
 DATABASE_URL='<type_of_database>:///<database file>'
 BCRYPT_LOG_ROUNDS=10
+EMAIL='someemail@gmail.com'
+EMAIL_PASSWORD='123456789'
 ```
 
 ## OpenSSL Certificate
