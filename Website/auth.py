@@ -79,7 +79,7 @@ def login():
             else:
                 attempts = 5 - usercheck.loginAttempts - 1
                 if attempts > 0:
-                    flash("Credentials given did not match our records. Try again.\nLogin attempts left: " + str(attempts), category='error')
+                    flash("Credentials given did not match our records. Try again.", category='error')
                     usercheck.loginAttempts += 1
                     db.session.commit()
                 else:
@@ -87,7 +87,7 @@ def login():
                     db.session.commit()
                     flash("User has been locked out. Contact administration to fix.", category='error')
         else :
-            flash("Given email does not have an account.", category='error')
+            flash("Credentials given did not match our records. Try again.", category='error')
 
     return render_template("login.html", user=current_user, form=form)
 
