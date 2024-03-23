@@ -1,3 +1,4 @@
+# This is the app config file
 from os import environ
 
 SECRET_KEY = environ.get('SECRET_KEY')
@@ -7,3 +8,6 @@ SESSION_PERMANENT = False
 BCRYPT_LOG_ROUNDS = int(environ.get('BCRYPT_LOG_ROUNDS'))
 MAIL_USERNAME = environ.get('EMAIL')
 MAIL_PASSWORD = environ.get('EMAIL_PASSWORD')
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+PERMANENT_SESSION_LIFETIME = 600

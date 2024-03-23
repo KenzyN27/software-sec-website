@@ -1,8 +1,6 @@
+# This is the file to define the database models
 from . import db, app
 from flask_login import UserMixin
-import jwt
-from time import time
-from os import environ
 from itsdangerous import URLSafeTimedSerializer as Serializer
 
 class User(db.Model, UserMixin):

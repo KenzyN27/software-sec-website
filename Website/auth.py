@@ -1,3 +1,4 @@
+# This identifies all the views using authentication
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from .models import User
 from . import db, bcrypt, mail, app
@@ -10,7 +11,6 @@ import datetime
 from threading import Thread
 from flask_mail import Message
 from os import environ
-import jwt
 
 # setup Blueprint for authentication webpages
 auth = Blueprint('auth', __name__)
@@ -72,7 +72,7 @@ def login():
                 flash("User is locked out. Contact administration to fix.", category='error')
             elif bcrypt.check_password_hash(usercheck.password, form.pswd.data):
                 flash("Logged in successfully!", category='success')
-                login_user(usercheck, duration=datetime.timedelta(minutes=5))
+                login_user(usercheck)
                 usercheck.loginAttempts = 0
                 db.session.commit()
                 return redirect(url_for('views.home'))
@@ -134,7 +134,6 @@ def forgot_password():
             userresult = User.query.filter_by(email=form.email.data).first()
 
             if userresult:
-                # thread to send mail without app hanging during sending
                 send_token(userresult)
                 return redirect(url_for('auth.login'))
             else:
