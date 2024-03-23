@@ -1,3 +1,4 @@
+# This is the main file to execute
 from Website import create_app
 from dotenv import load_dotenv
 

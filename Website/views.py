@@ -1,3 +1,4 @@
+# This is the file to define the views not needing authentication procedures
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from flask_login import login_required, current_user
 from wtforms import Form, StringField, validators

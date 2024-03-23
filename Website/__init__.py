@@ -1,4 +1,5 @@
-from flask import Flask, send_from_directory
+# This is the web application initialization file
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from flask_talisman import Talisman
