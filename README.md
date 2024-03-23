@@ -123,7 +123,6 @@ software-sec-website
 |   |   |   forgot_password.html
 │   |   │   home.html
 │   |   │   login.html
-│   |   │   logout.html
 |   |   |   reset_password.html
 │   |   │   submit.html
 │   |   │   userlist.html
