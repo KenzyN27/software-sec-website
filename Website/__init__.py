@@ -29,7 +29,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL')
     db.init_app(app)
     bcrypt.init_app(app)
-    talisman.init_app(app, content_security_policy=csp, x_xss_protection = True, session_cookie_secure = True)
+    talisman.init_app(app, content_security_policy=csp, session_cookie_secure = True, session_cookie_samesite=True)
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_USE_TLS'] = 587
     app.config['MAIL_USE_TLS'] = True
