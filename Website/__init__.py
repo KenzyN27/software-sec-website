@@ -31,7 +31,7 @@ def create_app():
     bcrypt.init_app(app)
     talisman.init_app(app, content_security_policy=csp, session_cookie_secure=True, session_cookie_samesite='Lax')
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_USE_TLS'] = 587
+    app.config['MAIL_PORT'] = 587
     app.config['MAIL_USE_TLS'] = True
    
     mail.init_app(app)
